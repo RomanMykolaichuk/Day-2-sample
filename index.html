@@ -3,391 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>AI Agents — Interactive Introduction</title>
 
-  <style>
-    :root {
-      --bg: #07111f;
-      --panel: #0d1b2a;
-      --panel2: #10243a;
-      --text: #eef6ff;
-      --muted: #9fb4c9;
-      --accent: #55d6be;
-      --accent2: #5ca9ff;
-      --danger: #ff7b7b;
-      --border: rgba(255,255,255,0.12);
-      --shadow: 0 20px 50px rgba(0,0,0,0.25);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(92,169,255,.18), transparent 30%),
-        radial-gradient(circle at top left, rgba(85,214,190,.12), transparent 25%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-      background: rgba(7,17,31,.85);
-      border-bottom: 1px solid var(--border);
-    }
-
-    nav .nav-inner {
-      max-width: 1200px;
-      margin: auto;
-      padding: 14px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .brand {
-      font-weight: 800;
-      letter-spacing: .5px;
-    }
-
-    .brand span {
-      color: var(--accent);
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 18px;
-      font-size: 14px;
-    }
-
-    nav a:hover {
-      color: white;
-    }
-
-    .hero {
-      max-width: 1200px;
-      margin: auto;
-      padding: 90px 24px 70px;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 50px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(46px, 7vw, 82px);
-      line-height: .95;
-      margin: 0 0 24px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 20px;
-      max-width: 700px;
-    }
-
-    .btn {
-      display: inline-block;
-      border: 0;
-      padding: 13px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 15px;
-      margin-right: 8px;
-      margin-top: 10px;
-      transition: .2s;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #052019;
-    }
-
-    .btn-secondary {
-      color: white;
-      background: var(--panel2);
-      border: 1px solid var(--border);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .agent-visual {
-      min-height: 420px;
-      display: grid;
-      place-items: center;
-      position: relative;
-    }
-
-    .core {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      background:
-        radial-gradient(circle, rgba(85,214,190,.4), rgba(92,169,255,.12));
-      border: 2px solid var(--accent);
-      box-shadow: 0 0 60px rgba(85,214,190,.3);
-      animation: pulse 3s infinite;
-    }
-
-    @keyframes pulse {
-      50% {
-        transform: scale(1.04);
-        box-shadow: 0 0 90px rgba(85,214,190,.45);
-      }
-    }
-
-    .orbit {
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      border: 1px dashed rgba(255,255,255,.18);
-      animation: rotate 22s linear infinite;
-    }
-
-    @keyframes rotate {
-      to { transform: rotate(360deg); }
-    }
-
-    .node {
-      position: absolute;
-      width: 100px;
-      padding: 10px;
-      text-align: center;
-      border-radius: 14px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      font-size: 14px;
-    }
-
-    .n1 { top: -20px; left: 130px; }
-    .n2 { right: -30px; top: 130px; }
-    .n3 { bottom: -20px; left: 130px; }
-    .n4 { left: -30px; top: 130px; }
-
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 65px 24px;
-    }
-
-    section h2 {
-      font-size: 38px;
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    .section-intro {
-      color: var(--muted);
-      max-width: 800px;
-      margin-bottom: 35px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 24px;
-      transition: .25s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(85,214,190,.55);
-    }
-
-    .card .icon {
-      font-size: 34px;
-      margin-bottom: 14px;
-    }
-
-    .card h3 {
-      margin: 0 0 8px;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .comparison {
-      display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      gap: 25px;
-      align-items: stretch;
-    }
-
-    .compare-box {
-      border-radius: 20px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 30px;
-    }
-
-    .vs {
-      display: grid;
-      place-items: center;
-      font-weight: bold;
-      color: var(--accent);
-      font-size: 24px;
-    }
-
-    .workflow {
-      display: flex;
-      gap: 10px;
-      align-items: stretch;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-
-    .step {
-      flex: 1;
-      min-width: 160px;
-      padding: 22px;
-      background: var(--panel);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      position: relative;
-    }
-
-    .step strong {
-      color: var(--accent);
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-
-    .arrow {
-      align-self: center;
-      font-size: 28px;
-      color: var(--accent2);
-    }
-
-    .demo {
-      background: linear-gradient(135deg, rgba(85,214,190,.08), rgba(92,169,255,.08));
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 30px;
-    }
-
-    .demo-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 25px;
-    }
-
-    select,
-    input {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #091727;
-      color: white;
-      margin-bottom: 12px;
-    }
-
-    .log {
-      background: #040b13;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      padding: 18px;
-      min-height: 260px;
-      font-family: Consolas, monospace;
-      font-size: 14px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-    }
-
-    .log .ok {
-      color: var(--accent);
-    }
-
-    .risk {
-      border-left: 4px solid var(--danger);
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      padding: 45px 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    @media(max-width: 850px) {
-      .hero,
-      .demo-layout,
-      .comparison {
-        grid-template-columns: 1fr;
-      }
-
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .vs {
-        min-height: 40px;
-      }
-
-      .hero {
-        padding-top: 55px;
-      }
-    }
-
-    @media(max-width: 560px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      nav .links {
-        display: none;
-      }
-
-      .agent-visual {
-        transform: scale(.8);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
 <nav>
   <div class="nav-inner">
-    <div class="brand">AI <span>AGENTS</span></div>
+
+    <div class="brand">
+      AI <span>AGENTS</span>
+    </div>
+
     <div class="links">
       <a href="#what">What is an Agent?</a>
       <a href="#anatomy">Anatomy</a>
@@ -395,6 +25,7 @@
       <a href="#demo">Demo</a>
       <a href="#risks">Risks</a>
     </div>
+
   </div>
 </nav>
 
@@ -402,7 +33,8 @@
 <header class="hero">
 
   <div>
-    <div style="color:var(--accent);font-weight:bold;">
+
+    <div class="hero-label">
       THE AGENTIC ERA
     </div>
 
@@ -414,9 +46,10 @@
     </h1>
 
     <p>
-      An AI agent does more than generate text. It can understand a goal,
-      plan actions, use tools, observe results and continue working until
-      it reaches an objective.
+      An AI agent does more than generate text.
+      It can understand a goal, plan actions,
+      use tools, observe results and continue working
+      until it reaches an objective.
     </p>
 
     <button
@@ -430,15 +63,34 @@
       onclick="document.querySelector('#anatomy').scrollIntoView()">
       Explore Architecture
     </button>
+
   </div>
+
 
   <div class="agent-visual">
 
     <div class="orbit">
-      <div class="node n1">🧠<br>Memory</div>
-      <div class="node n2">🛠️<br>Tools</div>
-      <div class="node n3">📋<br>Planning</div>
-      <div class="node n4">👁️<br>Observe</div>
+
+      <div class="node n1">
+        🧠<br>
+        Memory
+      </div>
+
+      <div class="node n2">
+        🛠️<br>
+        Tools
+      </div>
+
+      <div class="node n3">
+        📋<br>
+        Planning
+      </div>
+
+      <div class="node n4">
+        👁️<br>
+        Observe
+      </div>
+
     </div>
 
     <div class="core">
@@ -455,31 +107,61 @@
   <h2>What is an AI Agent?</h2>
 
   <p class="section-intro">
-    A traditional chatbot typically receives a prompt and generates an answer.
-    An agent operates inside a loop: it receives a goal, reasons about the next
-    action, uses available tools, evaluates the result and decides what to do next.
+    A traditional chatbot typically receives a prompt
+    and generates an answer.
+
+    An agent operates inside a loop:
+    it receives a goal, reasons about the next action,
+    uses available tools, evaluates the result
+    and decides what to do next.
   </p>
+
 
   <div class="comparison">
 
     <div class="compare-box">
+
       <h3>💬 Traditional LLM</h3>
-      <p><b>User:</b> Analyze this report.</p>
-      <p><b>LLM:</b> Generates an analysis.</p>
-      <hr style="border-color:var(--border)">
-      <p style="color:var(--muted)">
+
+      <p>
+        <b>User:</b>
+        Analyze this report.
+      </p>
+
+      <p>
+        <b>LLM:</b>
+        Generates an analysis.
+      </p>
+
+      <hr>
+
+      <p class="muted">
         Typical flow:
-        <br>
+        <br><br>
         Prompt → Response
       </p>
+
     </div>
 
-    <div class="vs">VS</div>
+
+    <div class="vs">
+      VS
+    </div>
+
 
     <div class="compare-box">
+
       <h3>🤖 AI Agent</h3>
-      <p><b>User:</b> Prepare a briefing from today's reports.</p>
-      <p><b>Agent:</b></p>
+
+      <p>
+        <b>User:</b>
+        Prepare a briefing from today's reports.
+      </p>
+
+      <p>
+        <b>Agent:</b>
+      </p>
+
       <p>
         1. Finds documents<br>
         2. Extracts information<br>
@@ -487,6 +169,7 @@
         4. Creates summary<br>
         5. Checks the output
       </p>
+
     </div>
 
   </div>
@@ -499,74 +182,106 @@
   <h2>Anatomy of an AI Agent</h2>
 
   <p class="section-intro">
-    Agentic systems combine several components. The language model acts as the
-    reasoning engine, while memory, tools and control logic allow it to interact
-    with information and external systems.
+    Agentic systems combine several components.
+    The language model acts as the reasoning engine,
+    while memory, tools and control logic allow it
+    to interact with information and external systems.
   </p>
+
 
   <div class="grid">
 
     <div class="card">
       <div class="icon">🎯</div>
+
       <h3>Goal</h3>
+
       <p>
         Defines what the agent is expected to achieve.
       </p>
     </div>
 
+
     <div class="card">
       <div class="icon">🧠</div>
+
       <h3>LLM</h3>
+
       <p>
-        Interprets information, reasons about tasks and chooses actions.
+        Interprets information, reasons about tasks
+        and chooses actions.
       </p>
     </div>
+
 
     <div class="card">
       <div class="icon">📋</div>
+
       <h3>Planning</h3>
+
       <p>
-        Breaks a complex objective into smaller executable steps.
+        Breaks a complex objective into smaller
+        executable steps.
       </p>
     </div>
+
 
     <div class="card">
       <div class="icon">🛠️</div>
+
       <h3>Tools</h3>
+
       <p>
-        APIs, databases, search engines, code execution or external software.
+        APIs, databases, search engines,
+        code execution or external software.
       </p>
     </div>
+
 
     <div class="card">
       <div class="icon">💾</div>
+
       <h3>Memory</h3>
+
       <p>
-        Stores useful context, previous observations and intermediate results.
+        Stores useful context, previous observations
+        and intermediate results.
       </p>
     </div>
+
 
     <div class="card">
       <div class="icon">👁️</div>
+
       <h3>Observation</h3>
+
       <p>
-        Reads the result produced by a tool or by the environment.
+        Reads the result produced by a tool
+        or by the environment.
       </p>
     </div>
+
 
     <div class="card">
       <div class="icon">🔄</div>
+
       <h3>Agent Loop</h3>
+
       <p>
-        Allows repeated reasoning, action and evaluation.
+        Allows repeated reasoning,
+        action and evaluation.
       </p>
     </div>
 
+
     <div class="card">
       <div class="icon">🛡️</div>
+
       <h3>Guardrails</h3>
+
       <p>
-        Limit what the agent can access and which actions it is allowed to perform.
+        Limit what the agent can access
+        and which actions it is allowed to perform.
       </p>
     </div>
 
@@ -580,43 +295,77 @@
   <h2>The Agentic Loop</h2>
 
   <p class="section-intro">
-    The central idea is a feedback loop. The agent does not need to know the
-    complete solution immediately. It can repeatedly act, observe and adapt.
+    The central idea is a feedback loop.
+    The agent does not need to know the complete solution immediately.
+
+    It can repeatedly act, observe and adapt.
   </p>
+
 
   <div class="workflow">
 
     <div class="step">
       <strong>01 — GOAL</strong>
+
       <h3>Understand</h3>
-      <p>Interpret the user's objective.</p>
+
+      <p>
+        Interpret the user's objective.
+      </p>
     </div>
 
-    <div class="arrow">→</div>
+
+    <div class="arrow">
+      →
+    </div>
+
 
     <div class="step">
       <strong>02 — THINK</strong>
+
       <h3>Plan</h3>
-      <p>Decide what needs to happen next.</p>
+
+      <p>
+        Decide what needs to happen next.
+      </p>
     </div>
 
-    <div class="arrow">→</div>
+
+    <div class="arrow">
+      →
+    </div>
+
 
     <div class="step">
       <strong>03 — ACT</strong>
+
       <h3>Use Tool</h3>
-      <p>Search, calculate, read data or call an API.</p>
+
+      <p>
+        Search, calculate, read data or call an API.
+      </p>
     </div>
 
-    <div class="arrow">→</div>
+
+    <div class="arrow">
+      →
+    </div>
+
 
     <div class="step">
       <strong>04 — OBSERVE</strong>
+
       <h3>Evaluate</h3>
-      <p>Inspect the tool result.</p>
+
+      <p>
+        Inspect the tool result.
+      </p>
     </div>
 
-    <div class="arrow">↻</div>
+
+    <div class="arrow">
+      ↻
+    </div>
 
   </div>
 
@@ -632,8 +381,10 @@
     <h3>Task</h3>
 
     <p>
-      “Find the three most important issues in these reports and prepare a short briefing.”
+      “Find the three most important issues in these reports
+      and prepare a short briefing.”
     </p>
+
 
     <div class="workflow">
 
@@ -677,18 +428,24 @@
   <h2>Interactive Agent Simulator</h2>
 
   <p class="section-intro">
-    This is a simplified local simulation. No AI model or internet connection
-    is used. It illustrates how an agent can move through a sequence of
-    reasoning and action steps.
+    This is a simplified local simulation.
+    No AI model or internet connection is used.
+
+    It illustrates how an agent can move through
+    a sequence of reasoning and action steps.
   </p>
+
 
   <div class="demo demo-layout">
 
     <div>
 
-      <label>Choose an agent mission:</label>
+      <label for="mission">
+        Choose an agent mission:
+      </label>
 
       <select id="mission">
+
         <option value="research">
           Research a topic
         </option>
@@ -704,14 +461,19 @@
         <option value="data">
           Analyze a dataset
         </option>
+
       </select>
 
-      <label>Enter a topic:</label>
+
+      <label for="topic">
+        Enter a topic:
+      </label>
 
       <input
         id="topic"
         value="Applications of AI agents in education"
       />
+
 
       <button
         class="btn btn-primary"
@@ -727,11 +489,12 @@
 
     </div>
 
-    <div id="agentLog" class="log">
-Agent ready.
 
-Choose a mission and press "Run Agent".
-    </div>
+    <div
+      id="agentLog"
+      class="log">Agent ready.
+
+Choose a mission and press "Run Agent".</div>
 
   </div>
 
@@ -745,35 +508,66 @@ Choose a mission and press "Run Agent".
   <div class="grid">
 
     <div class="card">
-      <div class="icon">1️⃣</div>
+
+      <div class="icon">
+        1️⃣
+      </div>
+
       <h3>Assistant</h3>
+
       <p>
-        Generates recommendations, but a human performs all actions.
+        Generates recommendations,
+        but a human performs all actions.
       </p>
+
     </div>
 
+
     <div class="card">
-      <div class="icon">2️⃣</div>
+
+      <div class="icon">
+        2️⃣
+      </div>
+
       <h3>Tool User</h3>
+
       <p>
-        Can use selected tools after receiving explicit instructions.
+        Can use selected tools after receiving
+        explicit instructions.
       </p>
+
     </div>
 
+
     <div class="card">
-      <div class="icon">3️⃣</div>
+
+      <div class="icon">
+        3️⃣
+      </div>
+
       <h3>Workflow Agent</h3>
+
       <p>
-        Can complete a sequence of actions with predefined boundaries.
+        Can complete a sequence of actions
+        with predefined boundaries.
       </p>
+
     </div>
 
+
     <div class="card">
-      <div class="icon">4️⃣</div>
+
+      <div class="icon">
+        4️⃣
+      </div>
+
       <h3>Autonomous Agent</h3>
+
       <p>
-        Can dynamically plan and execute multiple actions toward a goal.
+        Can dynamically plan and execute
+        multiple actions toward a goal.
       </p>
+
     </div>
 
   </div>
@@ -786,38 +580,59 @@ Choose a mission and press "Run Agent".
   <h2>Agents Need Control</h2>
 
   <p class="section-intro">
-    The more autonomy an agent receives, the more important monitoring,
+    The more autonomy an agent receives,
+    the more important monitoring,
     permissions and human oversight become.
   </p>
+
 
   <div class="grid">
 
     <div class="card risk">
+
       <h3>⚠ Hallucination</h3>
+
       <p>
-        An agent may reason from incorrect or invented information.
+        An agent may reason from incorrect
+        or invented information.
       </p>
+
     </div>
 
+
     <div class="card risk">
+
       <h3>⚠ Tool misuse</h3>
+
       <p>
-        Incorrect tool selection can produce unintended results.
+        Incorrect tool selection can produce
+        unintended results.
       </p>
+
     </div>
 
+
     <div class="card risk">
+
       <h3>⚠ Excessive autonomy</h3>
+
       <p>
-        Agents should not receive permissions beyond what the task requires.
+        Agents should not receive permissions
+        beyond what the task requires.
       </p>
+
     </div>
 
+
     <div class="card risk">
+
       <h3>⚠ Sensitive data</h3>
+
       <p>
-        Access to confidential information requires strict technical controls.
+        Access to confidential information
+        requires strict technical controls.
       </p>
+
     </div>
 
   </div>
@@ -829,18 +644,26 @@ Choose a mission and press "Run Agent".
 
   <div class="demo">
 
-    <h2 style="margin-top:0">
+    <h2 class="no-top-margin">
       Key Idea
     </h2>
 
-    <p style="font-size:25px;max-width:900px">
+    <p class="key-idea">
+
       A chatbot mainly answers a question.
-      An <span class="gradient-text"><b>AI agent</b></span>
-      receives a goal, decides what to do, uses tools,
-      observes the result and continues working.
+
+      An
+      <span class="gradient-text">
+        <b>AI agent</b>
+      </span>
+
+      receives a goal, decides what to do,
+      uses tools, observes the result
+      and continues working.
+
     </p>
 
-    <p style="color:var(--muted)">
+    <p class="muted">
       Goal → Reason → Act → Observe → Adapt → Result
     </p>
 
@@ -850,182 +673,17 @@ Choose a mission and press "Run Agent".
 
 
 <footer>
+
   AI Agents — Interactive Local Learning Page
+
   <br>
-  Single HTML file • No external dependencies
+
+  Single HTML/CSS/JavaScript project
+
 </footer>
 
 
-<script>
-
-  const sleep = ms =>
-    new Promise(resolve => setTimeout(resolve, ms));
-
-
-  async function addLog(text) {
-
-    const log = document.getElementById("agentLog");
-
-    log.textContent += "\n\n" + text;
-
-    log.scrollTop = log.scrollHeight;
-
-    await sleep(650);
-  }
-
-
-  async function runAgent() {
-
-    const mission =
-      document.getElementById("mission").value;
-
-    const topic =
-      document.getElementById("topic").value.trim();
-
-    const log =
-      document.getElementById("agentLog");
-
-    log.textContent = "AGENT STARTED";
-
-    await addLog(
-      "🎯 GOAL\n" +
-      getGoal(mission, topic)
-    );
-
-    await addLog(
-      "🧠 THINK\n" +
-      "I need to break the objective into smaller tasks."
-    );
-
-    await addLog(
-      "📋 PLAN\n" +
-      getPlan(mission)
-    );
-
-    await addLog(
-      "🛠️ ACTION 1\n" +
-      "Collect relevant information."
-    );
-
-    await addLog(
-      "👁️ OBSERVATION\n" +
-      "Relevant information has been identified."
-    );
-
-    await addLog(
-      "🛠️ ACTION 2\n" +
-      "Organize and compare the information."
-    );
-
-    await addLog(
-      "👁️ OBSERVATION\n" +
-      "Main patterns and useful points identified."
-    );
-
-    await addLog(
-      "🧠 REFLECTION\n" +
-      "The result should now be checked against the original goal."
-    );
-
-    await addLog(
-      "✅ FINAL RESULT\n" +
-      getResult(mission, topic)
-    );
-  }
-
-
-  function getGoal(mission, topic) {
-
-    const goals = {
-
-      research:
-        `Research: "${topic}" and identify the most useful findings.`,
-
-      briefing:
-        `Prepare a concise briefing about "${topic}".`,
-
-      course:
-        `Create a lesson plan about "${topic}".`,
-
-      data:
-        `Develop an analytical approach for "${topic}".`
-
-    };
-
-    return goals[mission];
-  }
-
-
-  function getPlan(mission) {
-
-    const plans = {
-
-      research:
-        `1. Define the research question
-2. Collect information
-3. Compare evidence
-4. Identify key findings
-5. Summarize`,
-
-      briefing:
-        `1. Identify the audience
-2. Extract important facts
-3. Prioritize information
-4. Draft briefing
-5. Check clarity`,
-
-      course:
-        `1. Define learning objectives
-2. Select key concepts
-3. Create explanation
-4. Add practical activity
-5. Create assessment`,
-
-      data:
-        `1. Define the analytical question
-2. Inspect the data
-3. Select analytical methods
-4. Interpret results
-5. Present conclusions`
-
-    };
-
-    return plans[mission];
-  }
-
-
-  function getResult(mission, topic) {
-
-    const results = {
-
-      research:
-        `Research workflow for "${topic}" completed.`,
-
-      briefing:
-        `Briefing structure for "${topic}" prepared.`,
-
-      course:
-        `Lesson workflow for "${topic}" prepared.`,
-
-      data:
-        `Analytical workflow for "${topic}" prepared.`
-
-    };
-
-    return results[mission];
-  }
-
-
-  function clearLog() {
-
-    document.getElementById("agentLog").textContent =
-`Agent ready.
-
-Choose a mission and press "Run Agent".`;
-
-  }
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
