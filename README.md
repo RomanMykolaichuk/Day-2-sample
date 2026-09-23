@@ -55,3 +55,5 @@ This repository was created as a practical training example for working with:
 ## Author
 
 Roman Mykolaichuk
+
+Day 3 GitHub workflow verified.
